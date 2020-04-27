@@ -38,10 +38,12 @@
           </label>
           <input
             class="input"
+            :class="{ error: $v.newUser.name.$error }"
             id="username"
             type="text"
             placeholder="Username"
             v-model="newUser.name"
+            @blur="$v.newUser.name.$touch()"
           />
         </div>
 
@@ -63,6 +65,7 @@
             性别
           </label>
           <select
+            :class="{ error: $v.newUser.isMale.$error }"
             v-model="newUser.isMale"
             class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             id="sex"
@@ -164,6 +167,13 @@ export default {
         }
       },
       immediate: true
+    },
+
+    dialog() {
+      if (!this.dialog) {
+        this.newUser = this.createFreshUserObject();
+        this.$v.$reset();
+      }
     }
   },
 
@@ -192,7 +202,10 @@ export default {
     },
 
     dialogOk() {
-      this.$emit('on-ok', this.newUser, this.type);
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        this.$emit('on-ok', this.newUser, this.type);
+      }
     },
 
     close() {

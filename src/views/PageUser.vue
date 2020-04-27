@@ -109,18 +109,24 @@ export default {
       this.loading = false;
     },
 
-    refreshUsers(newQuery = {}) {
-      const query = { ...this.$route.query, ...newQuery };
+    refreshUsers(query = {}) {
+      const newQuery = { ...this.$route.query, ...query };
 
-      if (!isEqual(query, this.$route.query)) {
+      const { newQueryPage, ...restNewQuery } = newQuery;
+      const { routeQueryPage, ...restRouteQuery } = this.$route.query;
+
+      if (
+        !isEqual(restNewQuery, restRouteQuery) &&
+        newQueryPage === +routeQueryPage
+      ) {
         this.$router.push({
           path: this.$route.path,
           query: {
-            ...query
+            ...newQuery
           }
         });
       } else {
-        this.getUsers(query);
+        this.getUsers(newQuery);
       }
     },
 

@@ -33,13 +33,16 @@ export default {
 
   data() {
     return {
-      name: this.query.name
+      name: ''
     };
   },
 
   watch: {
-    query({ name }) {
-      this.name = name;
+    query: {
+      handler({ name }) {
+        this.name = name;
+      },
+      immediate: true
     }
   },
 
