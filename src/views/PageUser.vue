@@ -109,11 +109,9 @@ export default {
       this.loading = false;
     },
 
-    refreshUsers(query = {}) {
-      const newQuery = { ...this.$route.query, ...query };
-
-      const { newQueryPage, ...restNewQuery } = newQuery;
-      const { routeQueryPage, ...restRouteQuery } = this.$route.query;
+    refreshUsers(newQuery = {}) {
+      const { page: newQueryPage, ...restNewQuery } = newQuery;
+      const { page: routeQueryPage, ...restRouteQuery } = this.$route.query;
 
       if (
         !isEqual(restNewQuery, restRouteQuery) &&
