@@ -109,7 +109,9 @@ export default {
       this.loading = false;
     },
 
-    refreshUsers(newQuery = {}) {
+    refreshUsers(query = {}) {
+      const newQuery = { ...this.$route.query, ...query };
+
       const { page: newQueryPage, ...restNewQuery } = newQuery;
       const { page: routeQueryPage, ...restRouteQuery } = this.$route.query;
 
