@@ -112,13 +112,7 @@ export default {
     refreshUsers(query = {}) {
       const newQuery = { ...this.$route.query, ...query };
 
-      const { page: newQueryPage, ...restNewQuery } = newQuery;
-      const { page: routeQueryPage, ...restRouteQuery } = this.$route.query;
-
-      if (
-        !isEqual(restNewQuery, restRouteQuery) &&
-        newQueryPage === +routeQueryPage
-      ) {
+      if (!isEqual(newQuery, this.$route.query)) {
         this.$router.push({
           path: this.$route.path,
           query: {
@@ -131,7 +125,7 @@ export default {
     },
 
     searchUser(query) {
-      this.refreshUsers({ ...query, page: 1 });
+      this.refreshUsers({ ...query, page: '1' });
     },
 
     createUser() {
@@ -152,8 +146,9 @@ export default {
       await UserService.removeUser(id);
 
       this.refreshUsers({
-        page:
+        page: String(
           this.users.length === 1 && this.page > 1 ? this.page - 1 : this.page
+        )
       });
     },
 
